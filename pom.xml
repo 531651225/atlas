@@ -658,10 +658,10 @@
 
         <janus.version>0.3.1</janus.version>
         <hadoop.version>3.1.1</hadoop.version>
-        <hbase.version>2.0.2</hbase.version>
+        <hbase.version>1.1.2</hbase.version>
         <solr.version>7.5.0</solr.version>
-        <hive.version>3.1.0</hive.version>
-        <kafka.version>2.0.0</kafka.version>
+        <hive.version>1.1.0</hive.version>
+        <kafka.version>1.1.1</kafka.version>
         <kafka.scala.binary.version>2.11</kafka.scala.binary.version>
         <calcite.version>1.16.0</calcite.version>
         <zookeeper.version>3.4.6</zookeeper.version>
@@ -781,7 +781,6 @@
         <module>addons/storm-bridge</module>
         <module>addons/hbase-bridge-shim</module>
         <module>addons/hbase-bridge</module>
-        <module>addons/hbase-testing-util</module>
         <module>addons/kafka-bridge</module>
 
         <module>distro</module>
@@ -832,7 +831,7 @@
         <repository>
             <id>typesafe</id>
             <name>Typesafe Repository</name>
-            <url>http://repo.typesafe.com/typesafe/releases/</url>
+            <url>https://dl.bintray.com/typesafe/maven-releases/</url>
         </repository>
     </repositories>
 

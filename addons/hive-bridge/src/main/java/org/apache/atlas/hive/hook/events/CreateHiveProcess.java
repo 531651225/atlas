@@ -25,6 +25,7 @@ import org.apache.atlas.model.notification.HookNotification;
 import org.apache.atlas.model.notification.HookNotification.EntityCreateRequestV2;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.hadoop.hive.ql.hooks.Entity;
+import org.apache.hadoop.hive.ql.hooks.HookContext;
 import org.apache.hadoop.hive.ql.hooks.LineageInfo;
 import org.apache.hadoop.hive.ql.hooks.LineageInfo.BaseColumnInfo;
 import org.apache.hadoop.hive.ql.hooks.LineageInfo.Dependency;
@@ -71,12 +72,13 @@ public class CreateHiveProcess extends BaseHiveEvent {
         if (!skipProcess()) {
             List<AtlasEntity> inputs         = new ArrayList<>();
             List<AtlasEntity> outputs        = new ArrayList<>();
+            HookContext       hiveContext    = getHiveContext();
             Set<String>       processedNames = new HashSet<>();
 
             ret = new AtlasEntitiesWithExtInfo();
 
-            if (getInputs() != null) {
-                for (ReadEntity input : getInputs()) {
+            if (hiveContext.getInputs() != null) {
+                for (ReadEntity input : hiveContext.getInputs()) {
                     String qualifiedName = getQualifiedName(input);
 
                     if (qualifiedName == null || !processedNames.add(qualifiedName)) {
@@ -95,8 +97,8 @@ public class CreateHiveProcess extends BaseHiveEvent {
                 }
             }
 
-            if (getOutputs() != null) {
-                for (WriteEntity output : getOutputs()) {
+            if (hiveContext.getOutputs() != null) {
+                for (WriteEntity output : hiveContext.getOutputs()) {
                     String qualifiedName = getQualifiedName(output);
 
                     if (qualifiedName == null || !processedNames.add(qualifiedName)) {
@@ -111,17 +113,7 @@ public class CreateHiveProcess extends BaseHiveEvent {
                 }
             }
 
-            boolean skipProcess = inputs.isEmpty() && outputs.isEmpty();
-
-            if (!skipProcess) {
-                if (inputs.isEmpty() && context.isSkippedInputEntity()) {
-                    skipProcess = true;
-                } else if (outputs.isEmpty() && context.isSkippedOutputEntity()) {
-                    skipProcess = true;
-                }
-            }
-
-            if (!skipProcess) {
+            if (!inputs.isEmpty() || !outputs.isEmpty()) {
                 AtlasEntity process = getHiveProcessEntity(inputs, outputs);
 
                 ret.addEntity(process);
@@ -138,7 +130,7 @@ public class CreateHiveProcess extends BaseHiveEvent {
     }
 
     private void processColumnLineage(AtlasEntity hiveProcess, AtlasEntitiesWithExtInfo entities) {
-        LineageInfo lineageInfo = getLineageInfo();
+        LineageInfo lineageInfo = getHiveContext().getLinfo();
 
         if (lineageInfo == null || CollectionUtils.isEmpty(lineageInfo.entrySet())) {
             return;
@@ -243,8 +235,8 @@ public class CreateHiveProcess extends BaseHiveEvent {
 
 
     private boolean skipProcess() {
-        Set<ReadEntity>  inputs  = getInputs();
-        Set<WriteEntity> outputs = getOutputs();
+        Set<ReadEntity>  inputs  = getHiveContext().getInputs();
+        Set<WriteEntity> outputs = getHiveContext().getOutputs();
 
         boolean ret = CollectionUtils.isEmpty(inputs) && CollectionUtils.isEmpty(outputs);
 

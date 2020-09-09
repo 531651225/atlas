@@ -27,7 +27,7 @@ public class HBaseCompatLoader {
     private static final String HBASE_VERSION_2_STRING = "2.";
 
     private static final String DEFAULT_HBASE_COMPAT_CLASS_NAME =
-        "org.janusgraph.diskstorage.hbase2.HBaseCompat2_0";
+        "org.janusgraph.diskstorage.hbase2.HBaseCompat1_1";
 
     private static final String[] HBASE_SUPPORTED_VERSIONS =
         new String[] { "0.98", "1.0", "1.1", "1.2", "1.3", "2.0" };
@@ -53,7 +53,7 @@ public class HBaseCompatLoader {
             for (String supportedVersion : HBASE_SUPPORTED_VERSIONS) {
                 if (hbaseVersion.startsWith(supportedVersion + ".")) {
                     if (hbaseVersion.startsWith(HBASE_VERSION_2_STRING)) {
-                        // All HBase 2.x maps to HBaseCompat2_0.
+                        // All HBase 2.x maps to HBaseCompat1_1.
                         className = DEFAULT_HBASE_COMPAT_CLASS_NAME;
                     }
                     else {

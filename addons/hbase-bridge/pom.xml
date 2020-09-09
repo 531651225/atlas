@@ -32,6 +32,8 @@
 
     <properties>
         <hadoop.version>3.0.3</hadoop.version>
+        <hbase.version>1.2.1</hbase.version>
+
     </properties>
 
     <dependencies>
@@ -223,13 +225,13 @@
             <artifactId>atlas-client-v2</artifactId>
             <version>${project.version}</version>
         </dependency>
-        <dependency>
-            <groupId>org.apache.hbase</groupId>
-            <artifactId>hbase-zookeeper</artifactId>
-            <type>test-jar</type>
-            <scope>test</scope>
-            <version>${hbase.version}</version>
-        </dependency>
+        <!--<dependency>-->
+            <!--<groupId>org.apache.hbase</groupId>-->
+            <!--<artifactId>hbase-zookeeper</artifactId>-->
+            <!--<type>test-jar</type>-->
+            <!--<scope>test</scope>-->
+            <!--<version>${hbase.version}</version>-->
+        <!--</dependency>-->
         <dependency>
             <groupId>org.apache.hbase</groupId>
             <artifactId>hbase-common</artifactId>

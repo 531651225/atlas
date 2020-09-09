@@ -89,6 +89,7 @@ public class SqoopHook extends SqoopJobDataPublisher {
 
             AtlasEntitiesWithExtInfo entities = new AtlasEntitiesWithExtInfo(entProcess);
 
+
             entities.addReferredEntity(entDbStore);
             entities.addReferredEntity(entHiveDb);
             if (entHiveTable != null) {

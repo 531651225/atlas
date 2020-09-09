@@ -14,16 +14,11 @@
 
 package org.janusgraph.diskstorage.hbase2;
 
+import org.apache.hadoop.hbase.HColumnDescriptor;
+import org.apache.hadoop.hbase.HTableDescriptor;
 import org.apache.hadoop.hbase.TableName;
 import org.apache.hadoop.hbase.TableNotFoundException;
-import org.apache.hadoop.hbase.client.Admin;
-import org.apache.hadoop.hbase.client.ColumnFamilyDescriptor;
-import org.apache.hadoop.hbase.client.Delete;
-import org.apache.hadoop.hbase.client.Result;
-import org.apache.hadoop.hbase.client.ResultScanner;
-import org.apache.hadoop.hbase.client.Scan;
-import org.apache.hadoop.hbase.client.Table;
-import org.apache.hadoop.hbase.client.TableDescriptor;
+import org.apache.hadoop.hbase.client.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -66,7 +61,7 @@ public class HBaseAdmin2_0 implements AdminMask
         scan.setCacheBlocks(false);
         scan.setCaching(2000);
         scan.setTimeRange(0, Long.MAX_VALUE);
-        scan.readVersions(1);
+//        scan.readVersions(1);
 
         try (final Table table = adm.getConnection().getTable(tableName);
              final ResultScanner scanner = table.getScanner(scan)) {
@@ -99,9 +94,9 @@ public class HBaseAdmin2_0 implements AdminMask
     }
 
     @Override
-    public TableDescriptor getTableDescriptor(String tableString) throws TableNotFoundException, IOException
+    public HTableDescriptor getTableDescriptor(String tableString) throws TableNotFoundException, IOException
     {
-        return adm.getDescriptor(TableName.valueOf(tableString));
+        return adm.getTableDescriptor(TableName.valueOf(tableString));
     }
 
     @Override
@@ -111,13 +106,13 @@ public class HBaseAdmin2_0 implements AdminMask
     }
 
     @Override
-    public void createTable(TableDescriptor desc) throws IOException
+    public void createTable(HTableDescriptor desc) throws IOException
     {
         adm.createTable(desc);
     }
 
     @Override
-    public void createTable(TableDescriptor desc, byte[] startKey, byte[] endKey, int numRegions) throws IOException
+    public void createTable(HTableDescriptor desc, byte[] startKey, byte[] endKey, int numRegions) throws IOException
     {
         adm.createTable(desc, startKey, endKey, numRegions);
     }
@@ -154,9 +149,9 @@ public class HBaseAdmin2_0 implements AdminMask
     }
 
     @Override
-    public void addColumn(String tableString, ColumnFamilyDescriptor columnDescriptor) throws IOException
+    public void addColumn(String tableString, HColumnDescriptor columnDescriptor) throws IOException
     {
-        adm.addColumnFamily(TableName.valueOf(tableString), columnDescriptor);
+        adm.addColumn(TableName.valueOf(tableString), columnDescriptor);
     }
 
     @Override

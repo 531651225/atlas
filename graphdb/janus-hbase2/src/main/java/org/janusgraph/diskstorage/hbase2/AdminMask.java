@@ -20,10 +20,10 @@
 package org.janusgraph.diskstorage.hbase2;
 
 import org.apache.hadoop.hbase.ClusterStatus;
+import org.apache.hadoop.hbase.HColumnDescriptor;
+import org.apache.hadoop.hbase.HTableDescriptor;
 import org.apache.hadoop.hbase.TableNotFoundException;
-import org.apache.hadoop.hbase.client.ColumnFamilyDescriptor;
 import org.apache.hadoop.hbase.client.HBaseAdmin;
-import org.apache.hadoop.hbase.client.TableDescriptor;
 
 import java.io.Closeable;
 import java.io.IOException;
@@ -44,13 +44,13 @@ public interface AdminMask extends Closeable
      */
     void dropTable(String tableName) throws IOException;
 
-    TableDescriptor getTableDescriptor(String tableName) throws TableNotFoundException, IOException;
+    HTableDescriptor getTableDescriptor(String tableName) throws TableNotFoundException, IOException;
 
     boolean tableExists(String tableName) throws IOException;
 
-    void createTable(TableDescriptor desc) throws IOException;
+    void createTable(HTableDescriptor desc) throws IOException;
 
-    void createTable(TableDescriptor desc, byte[] startKey, byte[] endKey, int numRegions) throws IOException;
+    void createTable(HTableDescriptor desc, byte[] startKey, byte[] endKey, int numRegions) throws IOException;
 
     /**
      * Estimate the number of regionservers in the HBase cluster.
@@ -70,5 +70,5 @@ public interface AdminMask extends Closeable
 
     boolean isTableDisabled(String tableName) throws IOException;
 
-    void addColumn(String tableName, ColumnFamilyDescriptor columnDescriptor) throws IOException;
+        void addColumn(String tableName, HColumnDescriptor columnDescriptor) throws IOException;
 }
